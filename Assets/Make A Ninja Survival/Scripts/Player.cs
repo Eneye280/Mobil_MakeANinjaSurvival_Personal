@@ -10,6 +10,15 @@ public class Player : MonoBehaviour
     private Vector3 targetPosition;
     private Vector2 clickOrigin;
 
+    private bool invincible = false;
+    public bool Invincible
+    {
+        set
+        {
+            invincible = value;
+        }
+    }
+
     private void Start()
     {
         clickOrigin = Vector2.zero;
@@ -53,6 +62,8 @@ public class Player : MonoBehaviour
 
     internal void Kill()
     {
+        if (invincible) return;
+
         Destroy(gameObject);
     }
 }
