@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class Player : MonoBehaviour
@@ -51,5 +49,10 @@ public class Player : MonoBehaviour
 
         Vector3 smoothPosition = Vector3.Lerp(transform.position, targetPosition, speed * Time.deltaTime);
         transform.position = new Vector3(smoothPosition.x, transform.position.y, smoothPosition.z);
+    }
+
+    internal void Kill()
+    {
+        Destroy(gameObject);
     }
 }
