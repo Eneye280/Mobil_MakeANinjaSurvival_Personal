@@ -10,6 +10,12 @@ public class GameController : MonoBehaviour
 
     [Header("Gameplay")]
     [SerializeField] private float duration;
+    public enum GameMode
+    {
+        Jumpers, Rollers, Shooters
+    }
+
+    public GameMode gameMode;
 
     [Header("Game: Jumpers")]
     [SerializeField] private GameObject jumpingEnemyPrefab;
@@ -65,7 +71,17 @@ public class GameController : MonoBehaviour
 
     private void InstanceEnemy()
     {
-        GameObject jumpingEnemyObject = Instantiate(jumpingEnemyPrefab);
-        jumpingEnemyObject.transform.SetParent(transform);
+        switch (gameMode)
+        {
+            case GameMode.Jumpers:
+                GameObject jumpingEnemyObject = Instantiate(jumpingEnemyPrefab);
+                jumpingEnemyObject.transform.SetParent(transform);
+                break;
+            case GameMode.Rollers:
+
+                break;
+            case GameMode.Shooters:
+                break;
+        }
     }
 }
