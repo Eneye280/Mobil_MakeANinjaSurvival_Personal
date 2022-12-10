@@ -1,7 +1,7 @@
 using UnityEngine;
 using TMPro;
 
-public class AvoiderGameController : MonoBehaviour
+public class GameController : MonoBehaviour
 {
     [SerializeField] private Player player;
 
@@ -11,6 +11,9 @@ public class AvoiderGameController : MonoBehaviour
     [Header("Gameplay")]
     [SerializeField] private float duration;
 
+    [Header("Game: Jumpers")]
+    [SerializeField] private GameObject jumpingEnemyPrefab;
+
     private float timer;
     private bool gameOver;
     private bool win;
@@ -18,6 +21,8 @@ public class AvoiderGameController : MonoBehaviour
     private void Start()
     {
         timer = duration;
+
+        InstanceEnemy();
     }
 
     private void Update()
@@ -56,5 +61,11 @@ public class AvoiderGameController : MonoBehaviour
                 tmpInfoText.text = "You Lose!";
             }
         }
+    }
+
+    private void InstanceEnemy()
+    {
+        GameObject jumpingEnemyObject = Instantiate(jumpingEnemyPrefab);
+        jumpingEnemyObject.transform.SetParent(transform);
     }
 }
