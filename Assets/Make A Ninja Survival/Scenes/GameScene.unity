@@ -701,9 +701,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   player: {fileID: 1323768207}
-  tmpInfoText: {fileID: 1408820765}
-  duration: 15
   gameMode: 1
+  duration: 15
+  depthRange: 4
+  tmpInfoText: {fileID: 1408820765}
   jumpingEnemyPrefab: {fileID: 7370639344859441405, guid: 3937bda1cc5ce0c49bfb86d54a830f86,
     type: 3}
   rollingEnemyPrefab: {fileID: 1448017044519056363, guid: 3cd0d51af46b1224a9f5a341406abfca,

@@ -5,17 +5,20 @@ public class GameController : MonoBehaviour
 {
     [SerializeField] private Player player;
 
-    [Header("UI")]
-    [SerializeField] private TextMeshProUGUI tmpInfoText;
-
     [Header("Gameplay")]
-    [SerializeField] private float duration;
+
+    public GameMode gameMode;
     public enum GameMode
     {
         Jumpers, Rollers, Shooters
     }
+    
+    [Space]
+    [Range(1, 20), SerializeField] private float duration;
+    [Range(1, 20), SerializeField] private float depthRange;
 
-    public GameMode gameMode;
+    [Header("UI")]
+    [SerializeField] private TextMeshProUGUI tmpInfoText;
 
     [Header("Game: Jumpers")]
     [SerializeField] private GameObject jumpingEnemyPrefab;
@@ -29,6 +32,8 @@ public class GameController : MonoBehaviour
 
     private void Start()
     {
+        player.DepthRange = depthRange;
+
         timer = duration;
 
         InstanceEnemy();
@@ -78,21 +83,19 @@ public class GameController : MonoBehaviour
         switch (gameMode)
         {
             case GameMode.Jumpers:
-                InstanceManagerEnemy(jumpingEnemyPrefab, true);
+                player.LockZ = true;
+                GameObject jumpingEnemyObject = Instantiate(jumpingEnemyPrefab);
+                jumpingEnemyObject.transform.SetParent(transform);
                 break;
             case GameMode.Rollers:
-                InstanceManagerEnemy(rollingEnemyPrefab, false);
+                player.LockZ = true;
+                GameObject rollingEnemyObject = Instantiate(rollingEnemyPrefab);
+                rollingEnemyObject.transform.SetParent(transform);
+                rollingEnemyObject.GetComponent<RollingEnemy>().DepthRange = depthRange;
                 break;
             case GameMode.Shooters:
                 break;
         }
     }
-
-    private void InstanceManagerEnemy(GameObject objectInstance, bool isPlayerLockZ)
-    {
-        player.LockZ = isPlayerLockZ;
-        GameObject objectReferenceInstance = Instantiate(objectInstance);
-        objectReferenceInstance.transform.SetParent(transform);
-    } 
     #endregion
 }

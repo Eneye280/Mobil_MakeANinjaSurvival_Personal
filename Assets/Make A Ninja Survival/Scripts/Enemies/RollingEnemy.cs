@@ -8,13 +8,16 @@ public class RollingEnemy : MonoBehaviour
     [Range(1, 10), SerializeField] private float waitingDuration;
 
     [Space]
-    [Range(-10, 10), SerializeField] private int[] depthValues;
+    [Range(-10, 10), SerializeField] private float[] depthPercentages;
 
-    [Header("Checker's")]
-    [SerializeField] private bool movingLeft;
-
+    private bool movingLeft;
     private float waitingTimer;
     private bool frozen;
+    
+    #region VARIABLE PROPERTIES
+    private float depthRange;
+    public float DepthRange { set { depthRange = value; } } 
+    #endregion
 
     #region VARIABLE COMPONENT'S
     private Rigidbody rigidbodyEnemy; 
@@ -39,9 +42,8 @@ public class RollingEnemy : MonoBehaviour
             rigidbodyEnemy.velocity = Vector3.zero;
         }
         else
-        {
             MovementEnemy();
-        }
+
         ChangeDirectionEnemy();
     }
 
@@ -60,7 +62,10 @@ public class RollingEnemy : MonoBehaviour
     private void RandomPositionEnemy()
     {
         waitingTimer = waitingDuration;
-        transform.position = new Vector3(transform.position.x, transform.position.y, depthValues[Random.Range(0, depthValues.Length)]);
+        transform.position = new Vector3(
+            transform.position.x, 
+            transform.position.y, 
+            ((depthRange + depthRange) * depthPercentages[Random.Range(0, depthPercentages.Length)]) - depthRange);
     }
 
     private void OnCollisionEnter(Collision collision)

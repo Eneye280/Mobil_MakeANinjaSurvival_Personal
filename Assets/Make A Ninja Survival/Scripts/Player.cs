@@ -3,30 +3,23 @@ using UnityEngine;
 public class Player : MonoBehaviour
 {
     [Header("Values")]
-    [SerializeField] private float speed;
-    [SerializeField] private float movementAmplitude;
-
+    [Range(1, 20), SerializeField] private float speed;
+    [Range(1, 20), SerializeField] private float movementAmplitude;
+    
     private Vector3 originalPosition;
     private Vector3 targetPosition;
     private Vector2 clickOrigin;
 
+    #region VARIABLE PROPERTIES
     private bool invincible = false;
-    public bool Invincible
-    {
-        set
-        {
-            invincible = value;
-        }
-    }
+    public bool Invincible { set { invincible = value; } }
 
     private bool lockZ = false;
-    public bool LockZ
-    {
-        set
-        {
-            lockZ = value;
-        }
-    }
+    public bool LockZ { set { lockZ = value; } }
+
+    private float depthRange;
+    public float DepthRange { set { depthRange = value; } } 
+    #endregion
 
     private void Start()
     {
@@ -67,6 +60,15 @@ public class Player : MonoBehaviour
 
         Vector3 smoothPosition = Vector3.Lerp(transform.position, targetPosition, speed * Time.deltaTime);
         transform.position = new Vector3(smoothPosition.x, transform.position.y, smoothPosition.z);
+
+        if (transform.position.z > depthRange)
+        {
+            transform.position = new Vector3(transform.position.x, transform.position.y, depthRange);
+        }
+        else if (transform.position.z < -depthRange)
+        {
+            transform.position = new Vector3(transform.position.x, transform.position.y, -depthRange);
+        }
     }
 
     internal void Kill()
