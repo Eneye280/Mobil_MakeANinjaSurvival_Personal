@@ -2,30 +2,27 @@ using UnityEngine;
 
 public class JumpingEnemy : MonoBehaviour
 {
-    [SerializeField] private float horizontalRange;
-    [SerializeField] private float jumpingForce;
-    [SerializeField] private float speed;
+    [Header("Values")]
+    [Range(1, 10), SerializeField] private float horizontalRange;
+    [Range(1, 2000), SerializeField] private float jumpingForce;
+    [Range(1, 20), SerializeField] private float speed;
 
     private bool isMovingDown;
     private float targetHorizontalPosition;
 
-    private Rigidbody _rigidbody;
+    #region VARIABLE COMPONENT'S
+    private Rigidbody rigidbodyEnemy; 
+    #endregion
 
-    private void Awake()
-    {
-        _rigidbody = GetComponent<Rigidbody>();
-    }
+    private void Awake() => rigidbodyEnemy = GetComponent<Rigidbody>();
 
-    private void Start()
-    {
-        isMovingDown = true;
-    }
+    private void Start() => isMovingDown = true;
 
     private void Update()
     {
         if(isMovingDown == false)
         {
-            if(_rigidbody.velocity.y < 0f)
+            if(rigidbodyEnemy.velocity.y < 0f)
             {
                 isMovingDown = true;
                 targetHorizontalPosition = Random.Range(-horizontalRange, horizontalRange);
@@ -39,7 +36,7 @@ public class JumpingEnemy : MonoBehaviour
     private void OnCollisionEnter(Collision collision)
     {
         isMovingDown = false;
-        _rigidbody.AddForce(0, jumpingForce, 0);
+        rigidbodyEnemy.AddForce(0, jumpingForce, 0);
 
         if(collision.transform.GetComponent<Player>() != null)
         {

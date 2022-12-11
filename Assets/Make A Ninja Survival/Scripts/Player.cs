@@ -2,9 +2,9 @@ using UnityEngine;
 
 public class Player : MonoBehaviour
 {
+    [Header("Values")]
     [SerializeField] private float speed;
     [SerializeField] private float movementAmplitude;
-    [SerializeField] private bool lockZ = false;
 
     private Vector3 originalPosition;
     private Vector3 targetPosition;
@@ -16,6 +16,15 @@ public class Player : MonoBehaviour
         set
         {
             invincible = value;
+        }
+    }
+
+    private bool lockZ = false;
+    public bool LockZ
+    {
+        set
+        {
+            lockZ = value;
         }
     }
 

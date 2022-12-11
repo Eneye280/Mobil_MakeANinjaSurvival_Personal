@@ -14,12 +14,13 @@ public class RollingEnemy : MonoBehaviour
     [SerializeField] private bool movingLeft;
 
     private float waitingTimer;
+    private bool frozen;
 
     #region VARIABLE COMPONENT'S
-    private Rigidbody rbRollingEnemy; 
+    private Rigidbody rigidbodyEnemy; 
     #endregion
 
-    private void Awake() => rbRollingEnemy = GetComponent<Rigidbody>();
+    private void Awake() => rigidbodyEnemy = GetComponent<Rigidbody>();
 
     private void Start()
     {
@@ -32,10 +33,10 @@ public class RollingEnemy : MonoBehaviour
 
     private void Update()
     {
-        if(waitingTimer > 0)
+        if(waitingTimer > 0 || frozen)
         {
             waitingTimer -= Time.deltaTime;
-            rbRollingEnemy.velocity = Vector3.zero;
+            rigidbodyEnemy.velocity = Vector3.zero;
         }
         else
         {
@@ -44,7 +45,7 @@ public class RollingEnemy : MonoBehaviour
         ChangeDirectionEnemy();
     }
 
-    private void MovementEnemy() => rbRollingEnemy.velocity = new Vector3(movingLeft ? -speed : speed, rbRollingEnemy.velocity.y, rbRollingEnemy.velocity.z);
+    private void MovementEnemy() => rigidbodyEnemy.velocity = new Vector3(movingLeft ? -speed : speed, rigidbodyEnemy.velocity.y, rigidbodyEnemy.velocity.z);
 
     private void ChangeDirectionEnemy()
     {
@@ -60,5 +61,14 @@ public class RollingEnemy : MonoBehaviour
     {
         waitingTimer = waitingDuration;
         transform.position = new Vector3(transform.position.x, transform.position.y, depthValues[Random.Range(0, depthValues.Length)]);
+    }
+
+    private void OnCollisionEnter(Collision collision)
+    {
+        if (collision.transform.GetComponent<Player>() != null)
+        {
+            frozen = true;
+            collision.transform.GetComponent<Player>().Kill();
+        }
     }
 }

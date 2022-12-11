@@ -20,6 +20,9 @@ public class GameController : MonoBehaviour
     [Header("Game: Jumpers")]
     [SerializeField] private GameObject jumpingEnemyPrefab;
 
+    [Header("Game: Rollers")]
+    [SerializeField] private GameObject rollingEnemyPrefab;
+
     private float timer;
     private bool gameOver;
     private bool win;
@@ -69,19 +72,27 @@ public class GameController : MonoBehaviour
         }
     }
 
+    #region INSTANCE ENEMY
     private void InstanceEnemy()
     {
         switch (gameMode)
         {
             case GameMode.Jumpers:
-                GameObject jumpingEnemyObject = Instantiate(jumpingEnemyPrefab);
-                jumpingEnemyObject.transform.SetParent(transform);
+                InstanceManagerEnemy(jumpingEnemyPrefab, true);
                 break;
             case GameMode.Rollers:
-
+                InstanceManagerEnemy(rollingEnemyPrefab, false);
                 break;
             case GameMode.Shooters:
                 break;
         }
     }
+
+    private void InstanceManagerEnemy(GameObject objectInstance, bool isPlayerLockZ)
+    {
+        player.LockZ = isPlayerLockZ;
+        GameObject objectReferenceInstance = Instantiate(objectInstance);
+        objectReferenceInstance.transform.SetParent(transform);
+    } 
+    #endregion
 }
