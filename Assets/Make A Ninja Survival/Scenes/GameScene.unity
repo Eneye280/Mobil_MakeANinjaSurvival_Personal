@@ -701,9 +701,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   player: {fileID: 1323768207}
-  tmpInfoText: {fileID: 1408820765}
+  gameMode: 1
   duration: 15
+  depthRange: 4
+  horizontalRange: 0
+  gameCamera: {fileID: 330585545}
+  tmpInfoText: {fileID: 1408820765}
   jumpingEnemyPrefab: {fileID: 7370639344859441405, guid: 3937bda1cc5ce0c49bfb86d54a830f86,
+    type: 3}
+  rollingEnemyPrefab: {fileID: 1448017044519056363, guid: 3cd0d51af46b1224a9f5a341406abfca,
     type: 3}
 --- !u!1 &610970703
 GameObject:
@@ -990,7 +996,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   speed: 12
   movementAmplitude: 10
-  lockZ: 0
 --- !u!54 &1323768208
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -1280,7 +1285,7 @@ MonoBehaviour:
     ModeOverride: 0
     LensShift: {x: 0, y: 0}
     GateFit: 2
-    m_SensorSize: {x: 0.49832776, y: 1}
+    m_SensorSize: {x: 0.4864865, y: 1}
   m_Transitions:
     m_BlendHint: 0
     m_InheritPosition: 0
