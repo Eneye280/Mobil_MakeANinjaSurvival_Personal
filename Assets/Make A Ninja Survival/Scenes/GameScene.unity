@@ -1172,6 +1172,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   speed: 12
   movementAmplitude: 10
+  jumpingAngle: 45
+  jumpingForce: 400
   model: {fileID: 354002536}
 --- !u!54 &1323768208
 Rigidbody:

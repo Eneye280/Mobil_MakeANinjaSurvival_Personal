@@ -5,6 +5,8 @@ public class Player : MonoBehaviour
     [Header("Values")]
     [Range(1, 20), SerializeField] private float speed;
     [Range(1, 20), SerializeField] private float movementAmplitude;
+    [Range(1, 100), SerializeField] private float jumpingAngle;
+    [Range(1, 2000), SerializeField] private float jumpingForce;
     
     [Header("General")]
     [SerializeField] private GameObject model;
@@ -33,7 +35,16 @@ public class Player : MonoBehaviour
     public bool CanJump { set { canJump = value; } }
     #endregion
 
-    private void Start() => clickOrigin = Vector2.zero;
+    #region VARIABLE'S COMPONENT'S
+    private Rigidbody rigidbodyPlayer;
+    #endregion
+
+    private void Start()
+    {
+        rigidbodyPlayer = GetComponent<Rigidbody>();
+
+        clickOrigin = Vector2.zero;
+    }
 
     private void Update()
     {
@@ -72,6 +83,9 @@ public class Player : MonoBehaviour
         {
             if(clickOrigin != Vector2.zero)
             {
+                rigidbodyPlayer.AddForce( 
+                    Mathf.Cos(jumpingAngle * Mathf.Deg2Rad) * jumpingForce * (lookingLeft ? -1 : 1), 
+                    Mathf.Sin(jumpingAngle * Mathf.Deg2Rad) * jumpingForce, 0);
 
             }
 
