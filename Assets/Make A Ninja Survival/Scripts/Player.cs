@@ -18,25 +18,30 @@ public class Player : MonoBehaviour
     public bool LockZ { set { lockZ = value; } }
 
     private float depthRange;
-    public float DepthRange { set { depthRange = value; } } 
+    public float DepthRange { set { depthRange = value; } }
+
+    private float horizontalRange;
+    public float HorizontalRange { set { horizontalRange = value; } }
     #endregion
 
-    private void Start()
-    {
-        clickOrigin = Vector2.zero;
-    }
+    private void Start() => clickOrigin = Vector2.zero;
 
     private void Update()
     {
-        Vector2 viewportCoordinates = new Vector2
-        (
-            Input.mousePosition.x / Screen.width,
-            Input.mousePosition.y / Screen.height
-        );
+        MovementPlayer();
+        SmoothPositionPlayer();
+        LimitTransformPlayer();
+    }
 
-        if(Input.GetMouseButton(0))
+    private void MovementPlayer()
+    {
+        Vector2 viewportCoordinates = new Vector2(
+       Input.mousePosition.x / Screen.width,
+       Input.mousePosition.y / Screen.height );
+
+        if (Input.GetMouseButton(0))
         {
-            if(clickOrigin == Vector2.zero)
+            if (clickOrigin == Vector2.zero)
             {
                 originalPosition = transform.position;
                 clickOrigin = viewportCoordinates;
@@ -57,18 +62,25 @@ public class Player : MonoBehaviour
         {
             clickOrigin = Vector2.zero;
         }
+    }
 
+    private void SmoothPositionPlayer()
+    {
         Vector3 smoothPosition = Vector3.Lerp(transform.position, targetPosition, speed * Time.deltaTime);
         transform.position = new Vector3(smoothPosition.x, transform.position.y, smoothPosition.z);
+    }
 
+    private void LimitTransformPlayer()
+    {
         if (transform.position.z > depthRange)
-        {
             transform.position = new Vector3(transform.position.x, transform.position.y, depthRange);
-        }
         else if (transform.position.z < -depthRange)
-        {
             transform.position = new Vector3(transform.position.x, transform.position.y, -depthRange);
-        }
+
+        if (transform.position.x > horizontalRange)
+            transform.position = new Vector3(horizontalRange, transform.position.y, transform.position.z);
+        else if (transform.position.x < -horizontalRange)
+            transform.position = new Vector3(-horizontalRange, transform.position.y, transform.position.z);
     }
 
     internal void Kill()

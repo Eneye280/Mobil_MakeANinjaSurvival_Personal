@@ -16,8 +16,10 @@ public class GameController : MonoBehaviour
     [Space]
     [Range(1, 20), SerializeField] private float duration;
     [Range(1, 20), SerializeField] private float depthRange;
+    [SerializeField] private float horizontalRange;
 
-    [Header("UI")]
+    [Header("Visuals")]
+    [SerializeField] private Camera gameCamera;
     [SerializeField] private TextMeshProUGUI tmpInfoText;
 
     [Header("Game: Jumpers")]
@@ -32,7 +34,16 @@ public class GameController : MonoBehaviour
 
     private void Start()
     {
+        #region Size Camera / Aspect Camera
+
+        float baseAspect = 9f / 16f;
+        float aspectVariation = gameCamera.aspect / baseAspect;
+        horizontalRange = (aspectVariation * gameCamera.orthographicSize) / 2f;
+
+        #endregion
+
         player.DepthRange = depthRange;
+        player.HorizontalRange = horizontalRange;
 
         timer = duration;
 
@@ -86,12 +97,14 @@ public class GameController : MonoBehaviour
                 player.LockZ = true;
                 GameObject jumpingEnemyObject = Instantiate(jumpingEnemyPrefab);
                 jumpingEnemyObject.transform.SetParent(transform);
+                jumpingEnemyObject.GetComponent<JumpingEnemy>().HorizontalRange = horizontalRange;
                 break;
             case GameMode.Rollers:
-                player.LockZ = true;
+                player.LockZ = false;
                 GameObject rollingEnemyObject = Instantiate(rollingEnemyPrefab);
                 rollingEnemyObject.transform.SetParent(transform);
                 rollingEnemyObject.GetComponent<RollingEnemy>().DepthRange = depthRange;
+                rollingEnemyObject.GetComponent<RollingEnemy>().HorizontalRange = horizontalRange;
                 break;
             case GameMode.Shooters:
                 break;

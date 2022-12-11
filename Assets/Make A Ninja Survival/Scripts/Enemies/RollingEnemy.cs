@@ -4,7 +4,6 @@ public class RollingEnemy : MonoBehaviour
 {
     [Header("Values")]
     [Range(1, 10), SerializeField] private float speed;
-    [Range(1, 10), SerializeField] private float horizontalRange;
     [Range(1, 10), SerializeField] private float waitingDuration;
 
     [Space]
@@ -16,7 +15,10 @@ public class RollingEnemy : MonoBehaviour
     
     #region VARIABLE PROPERTIES
     private float depthRange;
-    public float DepthRange { set { depthRange = value; } } 
+    public float DepthRange { set { depthRange = value; } }
+
+    private float horizontalRange;
+    public float HorizontalRange { set { horizontalRange = value; } }
     #endregion
 
     #region VARIABLE COMPONENT'S

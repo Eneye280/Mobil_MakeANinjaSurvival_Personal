@@ -3,12 +3,16 @@ using UnityEngine;
 public class JumpingEnemy : MonoBehaviour
 {
     [Header("Values")]
-    [Range(1, 10), SerializeField] private float horizontalRange;
     [Range(1, 2000), SerializeField] private float jumpingForce;
     [Range(1, 20), SerializeField] private float speed;
 
     private bool isMovingDown;
     private float targetHorizontalPosition;
+
+    #region VARIABLE PROPERTIES
+    private float horizontalRange;
+    public float HorizontalRange { set { horizontalRange = value; } }
+    #endregion
 
     #region VARIABLE COMPONENT'S
     private Rigidbody rigidbodyEnemy; 
