@@ -10,7 +10,7 @@ public class GameController : MonoBehaviour
     public GameMode gameMode;
     public enum GameMode
     {
-        Jumpers, Rollers, Bouncers
+        Jumpers, Rollers, Bouncers, Crawlers
     }
     
     [Space]
@@ -33,6 +33,9 @@ public class GameController : MonoBehaviour
     [Header("Game: Rollers")]
     [SerializeField] private GameObject bouncersEnemyPrefab;
     [Range(1, 5), SerializeField] private int bouncingEnemiesAmount;
+
+    [Header("Game: Crawlers")]
+    [SerializeField] private GameObject crawlersEnemyPrefab;
 
     private float timer;
     private bool gameOver;
@@ -129,6 +132,9 @@ public class GameController : MonoBehaviour
             case GameMode.Bouncers:
                 InstanceEnemyBouncer();
                 break;
+            case GameMode.Crawlers:
+                InstanceEnemyCrawlers();
+                break;
         }
     }
     private void InstanceEnemyJumper()
@@ -166,6 +172,17 @@ public class GameController : MonoBehaviour
             bouncersEnemyObject.GetComponent<BouncingEnemy>().DepthRange = depthRange;
             bouncersEnemyObject.GetComponent<BouncingEnemy>().HorizontalRange = horizontalRange;
         }
+    }
+    private void InstanceEnemyCrawlers()
+    {
+        GameObject crawlersEnemyObject = Instantiate(crawlersEnemyPrefab);
+        crawlersEnemyObject.transform.SetParent(transform);
+
+        crawlersEnemyObject.transform.position = new Vector3(
+            (Random.value > 0.5f) ? (horizontalRange + 0.8f) : (-horizontalRange - 0.8f),
+            crawlersEnemyObject.transform.position.y,
+            crawlersEnemyObject.transform.position.z);
+
     }
     #endregion
 }
