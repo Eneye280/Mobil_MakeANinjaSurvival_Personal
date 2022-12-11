@@ -28,43 +28,13 @@ public class BouncingEnemy : MonoBehaviour
 
     private void Start()
     {
-        transform.position = new Vector3(
-            Random.value > .5f ? horizontalRange : -horizontalRange, 
-            transform.position.y, 
-            0);
+        PositionInitial();
 
         movingLeft = transform.position.x > 0;
         movingUp = Random.value > .5f;
 
-        float targetAngle = baseAngle + (Random.Range(0, variableAngle));
-
-        if(movingLeft)
-        {
-            if(movingUp)
-            {
-                angle = 90 + targetAngle;
-            }
-            else
-            {
-                angle = 270 - targetAngle;
-            }
-        }
-        else
-        {
-            if(movingUp)
-            {
-                angle = targetAngle;
-            }
-            else
-            {
-                angle = 270 + targetAngle;
-            }
-        }
-
-        targetVelocity = new Vector3(
-            Mathf.Cos(angle * Mathf.Deg2Rad * speed),
-            rigidbodyEnemy.velocity.y,
-            Mathf.Sin(angle * Mathf.Deg2Rad * speed));
+        AngleInitial();
+        VelocityInitial();
     }
 
     private void Update()
@@ -74,6 +44,43 @@ public class BouncingEnemy : MonoBehaviour
         AngleEnemy();
         ChangeDirectionEnemy();
     }
+
+    #region INITIALIZE METHOD'S
+    private void PositionInitial()
+    {
+        transform.position = new Vector3(
+            Random.value > .5f ? horizontalRange : -horizontalRange,
+            transform.position.y, 0);
+    }
+
+    private void AngleInitial()
+    {
+        float targetAngle = baseAngle + (Random.Range(0, variableAngle));
+
+        if (movingLeft)
+        {
+            if (movingUp)
+                angle = 90 + targetAngle;
+            else
+                angle = 270 - targetAngle;
+        }
+        else
+        {
+            if (movingUp)
+                angle = targetAngle;
+            else
+                angle = 270 + targetAngle;
+        }
+    }
+
+    private void VelocityInitial()
+    {
+        targetVelocity = new Vector3(
+            Mathf.Cos(angle * Mathf.Deg2Rad * speed),
+            rigidbodyEnemy.velocity.y,
+            Mathf.Sin(angle * Mathf.Deg2Rad * speed));
+    } 
+    #endregion
 
     private void AngleEnemy()
     {

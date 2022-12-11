@@ -9,7 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4992257192911946131}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Model
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -45,7 +45,7 @@ GameObject:
   - component: {fileID: 1223194134617337019}
   - component: {fileID: 3544399988875688604}
   - component: {fileID: 8305146392597601408}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Cube (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -128,7 +128,7 @@ GameObject:
   - component: {fileID: 1796723865759540422}
   - component: {fileID: 3023191018266845331}
   - component: {fileID: 5209141388898638355}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Sphere
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -211,7 +211,7 @@ GameObject:
   - component: {fileID: 5446154660454983765}
   - component: {fileID: 4027234609412817904}
   - component: {fileID: 1519350964451409973}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Cube
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -295,7 +295,7 @@ GameObject:
   - component: {fileID: 2795105396440250448}
   - component: {fileID: 5926261703126636726}
   - component: {fileID: 4272916540817839733}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Bouncing Enemty
   m_TagString: Untagged
   m_Icon: {fileID: 0}

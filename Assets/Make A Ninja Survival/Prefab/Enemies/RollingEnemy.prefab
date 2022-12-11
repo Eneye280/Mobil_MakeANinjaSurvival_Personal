@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 1543614763164084796}
   - component: {fileID: 3989457748147461455}
   - component: {fileID: 6245997381497461399}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: RollingEnemy
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -113,7 +113,7 @@ GameObject:
   - component: {fileID: 8809025905427644229}
   - component: {fileID: 4205035443390625042}
   - component: {fileID: 8953301107601815452}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Sphere
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -196,7 +196,7 @@ GameObject:
   - component: {fileID: 7853458240591366053}
   - component: {fileID: 1238775268325279690}
   - component: {fileID: 2253334789101327218}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Eye
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -277,7 +277,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8329803728218586355}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Model
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -313,7 +313,7 @@ GameObject:
   - component: {fileID: 8347561503393464257}
   - component: {fileID: 3247006806481168557}
   - component: {fileID: 6259669141522396451}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Eye
   m_TagString: Untagged
   m_Icon: {fileID: 0}
