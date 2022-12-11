@@ -7,6 +7,9 @@ public class RollingEnemy : MonoBehaviour
     [Range(1, 10), SerializeField] private float horizontalRange;
     [Range(1, 10), SerializeField] private float waitingDuration;
 
+    [Space]
+    [Range(-10, 10), SerializeField] private int[] depthValues;
+
     [Header("Checker's")]
     [SerializeField] private bool movingLeft;
 
@@ -18,7 +21,14 @@ public class RollingEnemy : MonoBehaviour
 
     private void Awake() => rbRollingEnemy = GetComponent<Rigidbody>();
 
-    private void Start() => movingLeft = true;
+    private void Start()
+    {
+        transform.position = new Vector3(Random.value > 0.5f ? horizontalRange : -horizontalRange, transform.position.y, transform.position.z);
+
+        movingLeft = transform.position.x > 0;
+
+        RandomPositionEnemy();
+    }
 
     private void Update()
     {
@@ -31,8 +41,6 @@ public class RollingEnemy : MonoBehaviour
         {
             MovementEnemy();
         }
-
-        
         ChangeDirectionEnemy();
     }
 
@@ -44,7 +52,13 @@ public class RollingEnemy : MonoBehaviour
             (!movingLeft && transform.position.x > horizontalRange))
         {
             movingLeft = !movingLeft;
-            waitingTimer = waitingDuration;
+            RandomPositionEnemy();
         }
+    }
+
+    private void RandomPositionEnemy()
+    {
+        waitingTimer = waitingDuration;
+        transform.position = new Vector3(transform.position.x, transform.position.y, depthValues[Random.Range(0, depthValues.Length)]);
     }
 }

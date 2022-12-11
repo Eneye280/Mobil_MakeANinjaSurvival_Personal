@@ -98,6 +98,7 @@ MonoBehaviour:
   speed: 4
   horizontalRange: 4
   waitingDuration: 1
+  depthValues: fdffffffffffffff0100000003000000
   movingLeft: 0
 --- !u!1 &4100133389056545292
 GameObject:
