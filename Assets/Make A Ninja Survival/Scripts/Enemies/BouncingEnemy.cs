@@ -7,6 +7,7 @@ public class BouncingEnemy : MonoBehaviour
 
     private bool movingLeft;
     private bool movingUp;
+    private float angle;
 
     #region VARIABLE PROPERTIES
     private float depthRange;
@@ -35,9 +36,36 @@ public class BouncingEnemy : MonoBehaviour
 
     private void Update()
     {
+        AngleEnemy();
+        ChangeDirectionEnemy();
+    }
+
+    private void AngleEnemy()
+    {
         rigidbodyEnemy.velocity = new Vector3(
-            movingLeft ? -speed : speed,
+            Mathf.Cos(angle * Mathf.Deg2Rad * speed),
             rigidbodyEnemy.velocity.y,
-            rigidbodyEnemy.velocity.z);
+            Mathf.Sin(angle * Mathf.Deg2Rad * speed));
+    }
+
+    private void ChangeDirectionEnemy()
+    {
+        if (movingLeft && transform.position.x < -horizontalRange)
+        {
+            movingLeft = !movingLeft;
+        }
+        else if (!movingLeft && transform.position.x > horizontalRange)
+        {
+            movingLeft = !movingLeft;
+        }
+
+        if (!movingUp && transform.position.z > depthRange)
+        {
+            movingUp = !movingUp;
+        }
+        else if(!movingUp && transform.position.z > depthRange)
+        {
+            movingUp = !movingUp;
+        }
     }
 }
