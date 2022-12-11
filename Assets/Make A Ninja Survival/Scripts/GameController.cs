@@ -36,10 +36,12 @@ public class GameController : MonoBehaviour
 
     [Header("Game: Crawlers")]
     [SerializeField] private GameObject crawlersEnemyPrefab;
+    [SerializeField] private float crawlerSpawnInterval;
 
     private float timer;
     private bool gameOver;
     private bool win;
+    private float crawlerSpawnTimer;
 
     private void Awake()
     {
@@ -71,6 +73,17 @@ public class GameController : MonoBehaviour
 
         CheckTimerGame();
         FinishGame();
+
+        if(gameMode == GameMode.Crawlers)
+        {
+            crawlerSpawnTimer -= Time.deltaTime;
+
+            if(crawlerSpawnTimer <= 0f)
+            {
+                crawlerSpawnTimer = crawlerSpawnInterval;
+                InstanceEnemyCrawlers();
+            }
+        }
     }
 
     #region WALLS
@@ -133,7 +146,9 @@ public class GameController : MonoBehaviour
                 InstanceEnemyBouncer();
                 break;
             case GameMode.Crawlers:
-                InstanceEnemyCrawlers();
+                player.LockZ = true;
+                player.CanJump = true; 
+                crawlerSpawnTimer = crawlerSpawnInterval;
                 break;
         }
     }
@@ -175,9 +190,6 @@ public class GameController : MonoBehaviour
     }
     private void InstanceEnemyCrawlers()
     {
-        player.LockZ = true;
-        player.CanJump = true;
-
         GameObject crawlersEnemyObject = Instantiate(crawlersEnemyPrefab);
         crawlersEnemyObject.transform.SetParent(transform);
 

@@ -806,6 +806,7 @@ MonoBehaviour:
   bouncingEnemiesAmount: 2
   crawlersEnemyPrefab: {fileID: 2775690327258566346, guid: 3f71551e61161224089a8077d53ed6f9,
     type: 3}
+  crawlerSpawnInterval: 4
 --- !u!1 &610970703
 GameObject:
   m_ObjectHideFlags: 0
@@ -1173,7 +1174,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   speed: 12
   movementAmplitude: 10
-  jumpingAngle: 45
+  jumpingAngle: 75
   jumpingForce: 400
   model: {fileID: 354002536}
 --- !u!54 &1323768208

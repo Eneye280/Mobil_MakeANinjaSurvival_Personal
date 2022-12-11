@@ -78,6 +78,9 @@ public class Player : MonoBehaviour
                     transform.position.y,
                     lockZ ? transform.position.z : originalPosition.z + variation.y * movementAmplitude
                 );
+
+                lookingLeft = targetPosition.x < transform.position.x;
+
             }
         }
         else
@@ -102,8 +105,6 @@ public class Player : MonoBehaviour
     {
         if(!isJumping)
         {
-            lookingLeft = targetPosition.x < transform.position.x;
-
             Vector3 smoothPosition = Vector3.Lerp(transform.position, targetPosition, speed * Time.deltaTime);
             transform.position = new Vector3(smoothPosition.x, transform.position.y, smoothPosition.z);
         }
