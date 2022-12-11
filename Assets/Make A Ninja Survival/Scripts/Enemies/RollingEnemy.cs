@@ -4,7 +4,7 @@ public class RollingEnemy : MonoBehaviour
 {
     [Header("Values")]
     [Range(1, 10), SerializeField] private float speed;
-    [Range(1, 10), SerializeField] private float waitingDuration;
+    [Range(0.1f, 10), SerializeField] private float waitingDuration;
 
     [Space]
     [Range(-10, 10), SerializeField] private float[] depthPercentages;

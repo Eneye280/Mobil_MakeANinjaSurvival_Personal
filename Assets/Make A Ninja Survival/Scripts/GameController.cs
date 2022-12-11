@@ -10,17 +10,19 @@ public class GameController : MonoBehaviour
     public GameMode gameMode;
     public enum GameMode
     {
-        Jumpers, Rollers, Shooters
+        Jumpers, Rollers, Bouncers
     }
     
     [Space]
-    [Range(1, 20), SerializeField] private float duration;
+    [Range(1, 60), SerializeField] private float duration;
     [Range(1, 20), SerializeField] private float depthRange;
     [SerializeField] private float horizontalRange;
 
     [Header("Visuals")]
     [SerializeField] private Camera gameCamera;
     [SerializeField] private TextMeshProUGUI tmpInfoText;
+    [SerializeField] private GameObject upperWall;
+    [SerializeField] private GameObject lowerWall;
 
     [Header("Game: Jumpers")]
     [SerializeField] private GameObject jumpingEnemyPrefab;
@@ -28,11 +30,15 @@ public class GameController : MonoBehaviour
     [Header("Game: Rollers")]
     [SerializeField] private GameObject rollingEnemyPrefab;
 
+    [Header("Game: Rollers")]
+    [SerializeField] private GameObject bouncersEnemyPrefab;
+    [Range(1, 5), SerializeField] private int bouncingEnemiesAmount;
+
     private float timer;
     private bool gameOver;
     private bool win;
 
-    private void Start()
+    private void Awake()
     {
         #region Size Camera / Aspect Camera
 
@@ -44,6 +50,8 @@ public class GameController : MonoBehaviour
 
         player.DepthRange = depthRange;
         player.HorizontalRange = horizontalRange;
+
+        PositionWalls();
 
         timer = duration;
 
@@ -58,15 +66,28 @@ public class GameController : MonoBehaviour
             win = false;
         }
 
+        CheckTimerGame();
+        FinishGame();
+    }
+
+    #region WALLS
+    private void PositionWalls()
+    {
+        upperWall.transform.position = new Vector3(upperWall.transform.position.x, upperWall.transform.position.y, depthRange + 1.25f);
+        lowerWall.transform.position = new Vector3(lowerWall.transform.position.x, lowerWall.transform.position.y - 1f, -depthRange - 1.25f);
+    }
+    #endregion
+
+    #region CHECK TIMER GAME
+    private void CheckTimerGame()
+    {
         timer -= Time.deltaTime;
 
-        if(timer > 0f)
-        {
+        if (timer > 0f)
             tmpInfoText.text = "Time: " + Mathf.Floor(timer);
-        }
         else
         {
-            if(player != null)
+            if (player != null)
             {
                 gameOver = true;
                 win = true;
@@ -74,10 +95,15 @@ public class GameController : MonoBehaviour
                 player.Invincible = true;
             }
         }
+    }
+    #endregion
 
-        if(gameOver == true)
+    #region FINISH GAME
+    private void FinishGame()
+    {
+        if (gameOver == true)
         {
-            if(win)
+            if (win)
             {
                 tmpInfoText.text = "You Win!";
             }
@@ -87,6 +113,7 @@ public class GameController : MonoBehaviour
             }
         }
     }
+    #endregion
 
     #region INSTANCE ENEMY
     private void InstanceEnemy()
@@ -94,20 +121,50 @@ public class GameController : MonoBehaviour
         switch (gameMode)
         {
             case GameMode.Jumpers:
-                player.LockZ = true;
-                GameObject jumpingEnemyObject = Instantiate(jumpingEnemyPrefab);
-                jumpingEnemyObject.transform.SetParent(transform);
-                jumpingEnemyObject.GetComponent<JumpingEnemy>().HorizontalRange = horizontalRange;
+                InstanceEnemyJumper();
                 break;
             case GameMode.Rollers:
-                player.LockZ = false;
-                GameObject rollingEnemyObject = Instantiate(rollingEnemyPrefab);
-                rollingEnemyObject.transform.SetParent(transform);
-                rollingEnemyObject.GetComponent<RollingEnemy>().DepthRange = depthRange;
-                rollingEnemyObject.GetComponent<RollingEnemy>().HorizontalRange = horizontalRange;
+                InstanceEnemyRoller();
                 break;
-            case GameMode.Shooters:
+            case GameMode.Bouncers:
+                InstanceEnemyBouncer();
                 break;
+        }
+    }
+    private void InstanceEnemyJumper()
+    {
+        player.LockZ = true;
+
+        GameObject jumpingEnemyObject = Instantiate(jumpingEnemyPrefab);
+        jumpingEnemyObject.transform.SetParent(transform);
+        jumpingEnemyObject.GetComponent<JumpingEnemy>().HorizontalRange = horizontalRange;
+    }
+    private void InstanceEnemyRoller()
+    {
+        player.LockZ = false;
+
+        GameObject rollingEnemyObject = Instantiate(rollingEnemyPrefab);
+        rollingEnemyObject.transform.SetParent(transform);
+        rollingEnemyObject.GetComponent<RollingEnemy>().DepthRange = depthRange;
+        rollingEnemyObject.GetComponent<RollingEnemy>().HorizontalRange = horizontalRange;
+    }
+    private void InstanceEnemyBouncer()
+    {
+        player.LockZ = true;
+
+        for (int i = 0; i < bouncingEnemiesAmount; i++)
+        {
+            GameObject bouncersEnemyObject = Instantiate(bouncersEnemyPrefab);
+            bouncersEnemyObject.transform.SetParent(transform);
+
+            bouncersEnemyObject.transform.position = new Vector3(
+                (i % 2 == 0) ? horizontalRange : -horizontalRange,
+                bouncersEnemyObject.transform.position.y,
+                bouncersEnemyObject.transform.position.z
+                );
+
+            bouncersEnemyObject.GetComponent<BouncingEnemy>().DepthRange = depthRange;
+            bouncersEnemyObject.GetComponent<BouncingEnemy>().HorizontalRange = horizontalRange;
         }
     }
     #endregion
