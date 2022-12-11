@@ -7,8 +7,8 @@ public class BouncingEnemy : MonoBehaviour
     [Range(1, 100), SerializeField] private float baseAngle;
     [Range(1, 50), SerializeField] private float variableAngle;
 
-    private bool movingLeft;
-    private bool movingUp;
+    [SerializeField] private bool movingLeft;
+    [SerializeField] private bool movingUp;
     private float angle;
     private Vector3 targetVelocity;
 
@@ -46,7 +46,7 @@ public class BouncingEnemy : MonoBehaviour
     #region INITIALIZE METHOD'S
     private void AngleInitial()
     {
-        float targetAngle = baseAngle + (Random.Range(0, variableAngle));
+        float targetAngle = baseAngle + Random.Range(0, variableAngle);
 
         if (movingLeft)
         {
@@ -58,7 +58,7 @@ public class BouncingEnemy : MonoBehaviour
         else
         {
             if (movingUp)
-                angle = 90- targetAngle;
+                angle = 90 - targetAngle;
             else
                 angle = 270 + targetAngle;
         }

@@ -10,7 +10,7 @@ public class GameController : MonoBehaviour
     public GameMode gameMode;
     public enum GameMode
     {
-        Jumpers, Rollers, Bouncers
+        Jumpers, Rollers, Bouncers, Crawlers
     }
     
     [Space]
@@ -34,9 +34,14 @@ public class GameController : MonoBehaviour
     [SerializeField] private GameObject bouncersEnemyPrefab;
     [Range(1, 5), SerializeField] private int bouncingEnemiesAmount;
 
+    [Header("Game: Crawlers")]
+    [SerializeField] private GameObject crawlersEnemyPrefab;
+    [SerializeField] private float crawlerSpawnInterval;
+
     private float timer;
     private bool gameOver;
     private bool win;
+    private float crawlerSpawnTimer;
 
     private void Awake()
     {
@@ -68,6 +73,17 @@ public class GameController : MonoBehaviour
 
         CheckTimerGame();
         FinishGame();
+
+        if(gameMode == GameMode.Crawlers)
+        {
+            crawlerSpawnTimer -= Time.deltaTime;
+
+            if(crawlerSpawnTimer <= 0f)
+            {
+                crawlerSpawnTimer = crawlerSpawnInterval;
+                InstanceEnemyCrawlers();
+            }
+        }
     }
 
     #region WALLS
@@ -129,6 +145,11 @@ public class GameController : MonoBehaviour
             case GameMode.Bouncers:
                 InstanceEnemyBouncer();
                 break;
+            case GameMode.Crawlers:
+                player.LockZ = true;
+                player.CanJump = true; 
+                crawlerSpawnTimer = crawlerSpawnInterval;
+                break;
         }
     }
     private void InstanceEnemyJumper()
@@ -166,6 +187,17 @@ public class GameController : MonoBehaviour
             bouncersEnemyObject.GetComponent<BouncingEnemy>().DepthRange = depthRange;
             bouncersEnemyObject.GetComponent<BouncingEnemy>().HorizontalRange = horizontalRange;
         }
+    }
+    private void InstanceEnemyCrawlers()
+    {
+        GameObject crawlersEnemyObject = Instantiate(crawlersEnemyPrefab);
+        crawlersEnemyObject.transform.SetParent(transform);
+
+        crawlersEnemyObject.transform.position = new Vector3(
+            (Random.value > 0.5f) ? (horizontalRange + 0.8f) : (-horizontalRange - 0.8f),
+            crawlersEnemyObject.transform.position.y,
+            crawlersEnemyObject.transform.position.z);
+
     }
     #endregion
 }

@@ -5,10 +5,19 @@ public class Player : MonoBehaviour
     [Header("Values")]
     [Range(1, 20), SerializeField] private float speed;
     [Range(1, 20), SerializeField] private float movementAmplitude;
+    [Range(1, 100), SerializeField] private float jumpingAngle;
+    [Range(1, 2000), SerializeField] private float jumpingForce;
+    
+    [Header("General")]
+    [SerializeField] private GameObject model;
     
     private Vector3 originalPosition;
     private Vector3 targetPosition;
+    private Quaternion targetRotation;
     private Vector2 clickOrigin;
+
+    private bool lookingLeft;
+    private bool isJumping;
 
     #region VARIABLE PROPERTIES
     private bool invincible = false;
@@ -22,24 +31,37 @@ public class Player : MonoBehaviour
 
     private float horizontalRange;
     public float HorizontalRange { set { horizontalRange = value; } }
+
+    private bool canJump = false;
+    public bool CanJump { set { canJump = value; } }
     #endregion
 
-    private void Start() => clickOrigin = Vector2.zero;
+    #region VARIABLE'S COMPONENT'S
+    private Rigidbody rigidbodyPlayer;
+    #endregion
+
+    private void Start()
+    {
+        rigidbodyPlayer = GetComponent<Rigidbody>();
+
+        clickOrigin = Vector2.zero;
+    }
 
     private void Update()
     {
         MovementPlayer();
         SmoothPositionPlayer();
+        RotatePlayer();
         LimitTransformPlayer();
     }
 
     private void MovementPlayer()
     {
         Vector2 viewportCoordinates = new Vector2(
-       Input.mousePosition.x / Screen.width,
-       Input.mousePosition.y / Screen.height );
+        Input.mousePosition.x / Screen.width,
+        Input.mousePosition.y / Screen.height);
 
-        if (Input.GetMouseButton(0))
+        if (!isJumping && Input.GetMouseButton(0))
         {
             if (clickOrigin == Vector2.zero)
             {
@@ -56,18 +78,42 @@ public class Player : MonoBehaviour
                     transform.position.y,
                     lockZ ? transform.position.z : originalPosition.z + variation.y * movementAmplitude
                 );
+
+                lookingLeft = targetPosition.x < transform.position.x;
+
             }
         }
         else
         {
+            if(clickOrigin != Vector2.zero)
+            {
+                if (canJump)
+                {
+                    isJumping = true;
+
+                    rigidbodyPlayer.AddForce(
+                        Mathf.Cos(jumpingAngle * Mathf.Deg2Rad) * jumpingForce * (lookingLeft ? -1 : 1),
+                        Mathf.Sin(jumpingAngle * Mathf.Deg2Rad) * jumpingForce, 0); 
+                }
+            }
+
             clickOrigin = Vector2.zero;
         }
     }
 
     private void SmoothPositionPlayer()
     {
-        Vector3 smoothPosition = Vector3.Lerp(transform.position, targetPosition, speed * Time.deltaTime);
-        transform.position = new Vector3(smoothPosition.x, transform.position.y, smoothPosition.z);
+        if(!isJumping)
+        {
+            Vector3 smoothPosition = Vector3.Lerp(transform.position, targetPosition, speed * Time.deltaTime);
+            transform.position = new Vector3(smoothPosition.x, transform.position.y, smoothPosition.z);
+        }
+    }
+
+    private void RotatePlayer()
+    {
+        targetRotation = Quaternion.Euler(0, (lookingLeft ? 180 : 0), 0);
+        transform.rotation = Quaternion.Lerp(transform.rotation, targetRotation, Time.deltaTime * 10f);
     }
 
     private void LimitTransformPlayer()
@@ -88,5 +134,14 @@ public class Player : MonoBehaviour
         if (invincible) return;
 
         Destroy(gameObject);
+    }
+
+    private void OnCollisionEnter(Collision collision)
+    {
+        if(collision.transform.CompareTag("Floor"))
+        {
+            isJumping = false;
+            targetPosition = new Vector3(transform.position.x, targetPosition.y, targetPosition.z);
+        }
     }
 }
