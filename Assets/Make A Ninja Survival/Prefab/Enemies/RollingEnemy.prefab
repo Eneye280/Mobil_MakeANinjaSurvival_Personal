@@ -33,7 +33,7 @@ Transform:
   m_Children:
   - {fileID: 8329803728218586355}
   m_Father: {fileID: 0}
-  m_RootOrder: 8
+  m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!54 &1543614763164084796
 Rigidbody:
@@ -95,6 +95,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ac7c2026dbda3bb4ab3e8a708d8c8911, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  speed: 4
+  horizontalRange: 4
+  waitingDuration: 1
+  movingLeft: 0
 --- !u!1 &4100133389056545292
 GameObject:
   m_ObjectHideFlags: 0
