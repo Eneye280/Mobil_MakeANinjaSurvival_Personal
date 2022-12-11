@@ -21,6 +21,8 @@ public class GameController : MonoBehaviour
     [Header("Visuals")]
     [SerializeField] private Camera gameCamera;
     [SerializeField] private TextMeshProUGUI tmpInfoText;
+    [SerializeField] private GameObject upperWall;
+    [SerializeField] private GameObject lowerWall;
 
     [Header("Game: Jumpers")]
     [SerializeField] private GameObject jumpingEnemyPrefab;
@@ -49,6 +51,8 @@ public class GameController : MonoBehaviour
         player.DepthRange = depthRange;
         player.HorizontalRange = horizontalRange;
 
+        PositionWalls();
+
         timer = duration;
 
         InstanceEnemy();
@@ -65,6 +69,14 @@ public class GameController : MonoBehaviour
         CheckTimerGame();
         FinishGame();
     }
+
+    #region WALLS
+    private void PositionWalls()
+    {
+        upperWall.transform.position = new Vector3(upperWall.transform.position.x, upperWall.transform.position.y, depthRange + 1.25f);
+        lowerWall.transform.position = new Vector3(lowerWall.transform.position.x, lowerWall.transform.position.y - 1f, -depthRange - 1.25f);
+    }
+    #endregion
 
     #region CHECK TIMER GAME
     private void CheckTimerGame()

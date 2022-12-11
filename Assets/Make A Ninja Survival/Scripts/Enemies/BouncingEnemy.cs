@@ -24,10 +24,10 @@ public class BouncingEnemy : MonoBehaviour
     private Rigidbody rigidbodyEnemy;
     #endregion
 
-    private void Awake() => rigidbodyEnemy = GetComponent<Rigidbody>();
-
     private void Start()
     {
+        rigidbodyEnemy = GetComponent<Rigidbody>();
+
         movingLeft = transform.position.x > 0;
         movingUp = Random.value > .5f;
 
@@ -58,7 +58,7 @@ public class BouncingEnemy : MonoBehaviour
         else
         {
             if (movingUp)
-                angle = targetAngle;
+                angle = 90- targetAngle;
             else
                 angle = 270 + targetAngle;
         }
@@ -107,6 +107,14 @@ public class BouncingEnemy : MonoBehaviour
             movingUp = !movingUp;
             transform.position = new Vector3(transform.position.x, transform.position.y, -depthRange);
             targetVelocity = new Vector3(targetVelocity.x, targetVelocity.y, -targetVelocity.z);
+        }
+    }
+
+    private void OnCollisionEnter(Collision collision)
+    {
+        if (collision.transform.GetComponent<Player>() != null)
+        {
+            collision.transform.GetComponent<Player>().Kill();
         }
     }
 }
