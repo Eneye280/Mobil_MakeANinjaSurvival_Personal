@@ -17,6 +17,7 @@ public class Player : MonoBehaviour
     private Vector2 clickOrigin;
 
     private bool lookingLeft;
+    private bool isJumping;
 
     #region VARIABLE PROPERTIES
     private bool invincible = false;
@@ -58,9 +59,9 @@ public class Player : MonoBehaviour
     {
         Vector2 viewportCoordinates = new Vector2(
         Input.mousePosition.x / Screen.width,
-        Input.mousePosition.y / Screen.height );
+        Input.mousePosition.y / Screen.height);
 
-        if (Input.GetMouseButton(0))
+        if (!isJumping && Input.GetMouseButton(0))
         {
             if (clickOrigin == Vector2.zero)
             {
@@ -83,10 +84,14 @@ public class Player : MonoBehaviour
         {
             if(clickOrigin != Vector2.zero)
             {
-                rigidbodyPlayer.AddForce( 
-                    Mathf.Cos(jumpingAngle * Mathf.Deg2Rad) * jumpingForce * (lookingLeft ? -1 : 1), 
-                    Mathf.Sin(jumpingAngle * Mathf.Deg2Rad) * jumpingForce, 0);
+                if (canJump)
+                {
+                    isJumping = true;
 
+                    rigidbodyPlayer.AddForce(
+                        Mathf.Cos(jumpingAngle * Mathf.Deg2Rad) * jumpingForce * (lookingLeft ? -1 : 1),
+                        Mathf.Sin(jumpingAngle * Mathf.Deg2Rad) * jumpingForce, 0); 
+                }
             }
 
             clickOrigin = Vector2.zero;
@@ -95,10 +100,13 @@ public class Player : MonoBehaviour
 
     private void SmoothPositionPlayer()
     {
-        lookingLeft = targetPosition.x < transform.position.x;
+        if(!isJumping)
+        {
+            lookingLeft = targetPosition.x < transform.position.x;
 
-        Vector3 smoothPosition = Vector3.Lerp(transform.position, targetPosition, speed * Time.deltaTime);
-        transform.position = new Vector3(smoothPosition.x, transform.position.y, smoothPosition.z);
+            Vector3 smoothPosition = Vector3.Lerp(transform.position, targetPosition, speed * Time.deltaTime);
+            transform.position = new Vector3(smoothPosition.x, transform.position.y, smoothPosition.z);
+        }
     }
 
     private void RotatePlayer()
@@ -125,5 +133,14 @@ public class Player : MonoBehaviour
         if (invincible) return;
 
         Destroy(gameObject);
+    }
+
+    private void OnCollisionEnter(Collision collision)
+    {
+        if(collision.transform.CompareTag("Floor"))
+        {
+            isJumping = false;
+            targetPosition = new Vector3(transform.position.x, targetPosition.y, targetPosition.z);
+        }
     }
 }
