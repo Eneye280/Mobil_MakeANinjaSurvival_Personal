@@ -28,8 +28,6 @@ public class BouncingEnemy : MonoBehaviour
 
     private void Start()
     {
-        PositionInitial();
-
         movingLeft = transform.position.x > 0;
         movingUp = Random.value > .5f;
 
@@ -46,13 +44,6 @@ public class BouncingEnemy : MonoBehaviour
     }
 
     #region INITIALIZE METHOD'S
-    private void PositionInitial()
-    {
-        transform.position = new Vector3(
-            Random.value > .5f ? horizontalRange : -horizontalRange,
-            transform.position.y, 0);
-    }
-
     private void AngleInitial()
     {
         float targetAngle = baseAngle + (Random.Range(0, variableAngle));

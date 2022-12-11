@@ -36,7 +36,7 @@ public class GameController : MonoBehaviour
     private bool gameOver;
     private bool win;
 
-    private void Start()
+    private void Awake()
     {
         #region Size Camera / Aspect Camera
 
@@ -109,31 +109,50 @@ public class GameController : MonoBehaviour
         switch (gameMode)
         {
             case GameMode.Jumpers:
-                player.LockZ = true;
-
-                GameObject jumpingEnemyObject = Instantiate(jumpingEnemyPrefab);
-                jumpingEnemyObject.transform.SetParent(transform);
-                jumpingEnemyObject.GetComponent<JumpingEnemy>().HorizontalRange = horizontalRange;
+                InstanceEnemyJumper();
                 break;
             case GameMode.Rollers:
-                player.LockZ = false;
-
-                GameObject rollingEnemyObject = Instantiate(rollingEnemyPrefab);
-                rollingEnemyObject.transform.SetParent(transform);
-                rollingEnemyObject.GetComponent<RollingEnemy>().DepthRange = depthRange;
-                rollingEnemyObject.GetComponent<RollingEnemy>().HorizontalRange = horizontalRange;
+                InstanceEnemyRoller();
                 break;
             case GameMode.Bouncers:
-                player.LockZ = true;
-
-                for (int i = 0; i < bouncingEnemiesAmount; i++)
-                {
-                    GameObject rbouncersEnemyObject = Instantiate(bouncersEnemyPrefab);
-                    rbouncersEnemyObject.transform.SetParent(transform);
-                    rbouncersEnemyObject.GetComponent<BouncingEnemy>().DepthRange = depthRange;
-                    rbouncersEnemyObject.GetComponent<BouncingEnemy>().HorizontalRange = horizontalRange;
-                }
+                InstanceEnemyBouncer();
                 break;
+        }
+    }
+    private void InstanceEnemyJumper()
+    {
+        player.LockZ = true;
+
+        GameObject jumpingEnemyObject = Instantiate(jumpingEnemyPrefab);
+        jumpingEnemyObject.transform.SetParent(transform);
+        jumpingEnemyObject.GetComponent<JumpingEnemy>().HorizontalRange = horizontalRange;
+    }
+    private void InstanceEnemyRoller()
+    {
+        player.LockZ = false;
+
+        GameObject rollingEnemyObject = Instantiate(rollingEnemyPrefab);
+        rollingEnemyObject.transform.SetParent(transform);
+        rollingEnemyObject.GetComponent<RollingEnemy>().DepthRange = depthRange;
+        rollingEnemyObject.GetComponent<RollingEnemy>().HorizontalRange = horizontalRange;
+    }
+    private void InstanceEnemyBouncer()
+    {
+        player.LockZ = true;
+
+        for (int i = 0; i < bouncingEnemiesAmount; i++)
+        {
+            GameObject bouncersEnemyObject = Instantiate(bouncersEnemyPrefab);
+            bouncersEnemyObject.transform.SetParent(transform);
+
+            bouncersEnemyObject.transform.position = new Vector3(
+                (i % 2 == 0) ? horizontalRange : -horizontalRange,
+                bouncersEnemyObject.transform.position.y,
+                bouncersEnemyObject.transform.position.z
+                );
+
+            bouncersEnemyObject.GetComponent<BouncingEnemy>().DepthRange = depthRange;
+            bouncersEnemyObject.GetComponent<BouncingEnemy>().HorizontalRange = horizontalRange;
         }
     }
     #endregion
