@@ -4,10 +4,12 @@ public class BouncingEnemy : MonoBehaviour
 {
     [Header("Values")]
     [Range(1, 10), SerializeField] private float speed;
+    [Range(1, 100), SerializeField] private float baseAngle;
+    [Range(1, 50), SerializeField] private float variableAngle;
 
     private bool movingLeft;
     private bool movingUp;
-    private float angle = 75;
+    private float angle;
     private Vector3 targetVelocity;
 
     #region VARIABLE PROPERTIES
@@ -27,17 +29,42 @@ public class BouncingEnemy : MonoBehaviour
     private void Start()
     {
         transform.position = new Vector3(
-            Random.value > 0.5f ? horizontalRange : -horizontalRange, 
+            Random.value > .5f ? horizontalRange : -horizontalRange, 
             transform.position.y, 
-            Random.Range(-depthRange, depthRange));
+            0);
+
+        movingLeft = transform.position.x > 0;
+        movingUp = Random.value > .5f;
+
+        float targetAngle = baseAngle + (Random.Range(0, variableAngle));
+
+        if(movingLeft)
+        {
+            if(movingUp)
+            {
+                angle = 90 + targetAngle;
+            }
+            else
+            {
+                angle = 270 - targetAngle;
+            }
+        }
+        else
+        {
+            if(movingUp)
+            {
+                angle = targetAngle;
+            }
+            else
+            {
+                angle = 270 + targetAngle;
+            }
+        }
 
         targetVelocity = new Vector3(
             Mathf.Cos(angle * Mathf.Deg2Rad * speed),
             rigidbodyEnemy.velocity.y,
             Mathf.Sin(angle * Mathf.Deg2Rad * speed));
-
-        movingLeft = transform.position.x > 0;
-        movingUp = transform.position.z < 0;
     }
 
     private void Update()

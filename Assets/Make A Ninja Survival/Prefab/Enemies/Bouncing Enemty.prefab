@@ -379,3 +379,5 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   speed: 3
+  baseAngle: 15
+  variableAngle: 10
