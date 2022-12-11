@@ -113,6 +113,8 @@ public class GameController : MonoBehaviour
                 player.LockZ = true;
                 GameObject rbouncersEnemyObject = Instantiate(bouncersEnemyPrefab);
                 rbouncersEnemyObject.transform.SetParent(transform);
+                rbouncersEnemyObject.GetComponent<BouncingEnemy>().DepthRange = depthRange;
+                rbouncersEnemyObject.GetComponent<BouncingEnemy>().HorizontalRange = horizontalRange;
                 break;
         }
     }
