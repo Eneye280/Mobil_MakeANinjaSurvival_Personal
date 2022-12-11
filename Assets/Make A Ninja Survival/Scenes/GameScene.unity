@@ -711,6 +711,8 @@ MonoBehaviour:
     type: 3}
   rollingEnemyPrefab: {fileID: 1448017044519056363, guid: 3cd0d51af46b1224a9f5a341406abfca,
     type: 3}
+  bouncersEnemyPrefab: {fileID: 6425259742049428550, guid: 3bb87c626dfb17f47b5fcd48382a39c8,
+    type: 3}
 --- !u!1 &610970703
 GameObject:
   m_ObjectHideFlags: 0

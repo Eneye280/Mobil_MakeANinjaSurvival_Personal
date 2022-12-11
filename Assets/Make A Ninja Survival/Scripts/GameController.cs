@@ -10,7 +10,7 @@ public class GameController : MonoBehaviour
     public GameMode gameMode;
     public enum GameMode
     {
-        Jumpers, Rollers, Shooters
+        Jumpers, Rollers, Bouncers
     }
     
     [Space]
@@ -27,6 +27,9 @@ public class GameController : MonoBehaviour
 
     [Header("Game: Rollers")]
     [SerializeField] private GameObject rollingEnemyPrefab;
+
+    [Header("Game: Rollers")]
+    [SerializeField] private GameObject bouncersEnemyPrefab;
 
     private float timer;
     private bool gameOver;
@@ -106,7 +109,10 @@ public class GameController : MonoBehaviour
                 rollingEnemyObject.GetComponent<RollingEnemy>().DepthRange = depthRange;
                 rollingEnemyObject.GetComponent<RollingEnemy>().HorizontalRange = horizontalRange;
                 break;
-            case GameMode.Shooters:
+            case GameMode.Bouncers:
+                player.LockZ = true;
+                GameObject rbouncersEnemyObject = Instantiate(bouncersEnemyPrefab);
+                rbouncersEnemyObject.transform.SetParent(transform);
                 break;
         }
     }
