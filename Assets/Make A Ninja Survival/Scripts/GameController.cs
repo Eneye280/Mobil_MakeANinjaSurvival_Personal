@@ -175,6 +175,8 @@ public class GameController : MonoBehaviour
     }
     private void InstanceEnemyCrawlers()
     {
+        player.LockZ = true;
+
         GameObject crawlersEnemyObject = Instantiate(crawlersEnemyPrefab);
         crawlersEnemyObject.transform.SetParent(transform);
 

@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2541383954744324696}
   - component: {fileID: 2179361056293674332}
-  - component: {fileID: 2873969951531623099}
+  - component: {fileID: 2219814751006983831}
   - component: {fileID: 9223344620156283884}
   m_Layer: 0
   m_Name: Crawlers Enemy
@@ -35,7 +35,7 @@ Transform:
   - {fileID: 6055860344261977621}
   - {fileID: 3636768995291784634}
   m_Father: {fileID: 0}
-  m_RootOrder: -1
+  m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!54 &2179361056293674332
 Rigidbody:
@@ -64,8 +64,8 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
---- !u!65 &2873969951531623099
-BoxCollider:
+--- !u!135 &2219814751006983831
+SphereCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -83,7 +83,7 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 1, y: 1, z: 1}
+  m_Radius: 0.75
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!114 &9223344620156283884
 MonoBehaviour:
@@ -97,6 +97,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 330b669ef040bae4cbc8833c384d857d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  speed: 3
+  lifeTime: 5
 --- !u!1 &3453701172375038369
 GameObject:
   m_ObjectHideFlags: 0
